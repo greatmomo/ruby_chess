@@ -104,7 +104,7 @@ describe Chess do
     context 'when given a selectable tile' do
       it 'returns valid input' do
         valid_input = 'B2'
-        expect(game_input.verify_input(valid_input).to eq('B2')
+        expect(game_input.verify_input(valid_input)).to eq('B2')
       end
     end
 
