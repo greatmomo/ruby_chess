@@ -62,5 +62,23 @@ describe Pawn do
     end
   end
 
+  describe '#symbol' do
+    context 'pawn is white' do
+      subject(:pawn_symbol) { described_class.new }
+
+      it 'has the white pawn symbol' do
+        expect(pawn_symbol.symbol).to eq('♙')
+      end
+    end
+
+    context 'pawn is black' do
+      subject(:pawn_symbol) { described_class.new('black') }
+
+      it 'has the black pawn symbol' do
+        expect(pawn_symbol.symbol).to eq('♟︎')
+      end
+    end
+  end
+
   # how do we check for attacks for pawns?
 end
