@@ -27,7 +27,7 @@ describe Pawn do
 
     context "pawn hasn't moved" do
       it 'can double move straight' do
-        expect(pawn_move.valid_moves).to include([0,1],[0,2],[1,1],[-1,1])
+        expect(pawn_move.valid_moves).to include([0,1],[0,2])
       end
     end
 
@@ -37,7 +37,27 @@ describe Pawn do
       end
 
       it "can't double move straight" do
-        expect(pawn_move.valid_moves).to include([0,1],[1,1],[-1,1])
+        expect(pawn_move.valid_moves).to include([0,1])
+      end
+    end
+  end
+
+  describe '#attack_moves' do
+    subject(:pawn_attack) { described_class.new }
+
+    context "pawn attack moves" do
+      it 'either diagonal' do
+        expect(pawn_attack.attack_moves).to include([1,1],[-1,1])
+      end
+    end
+  end
+
+  describe '#move' do
+    subject(:pawn_move) { described_class.new }
+
+    context 'pawn is moved' do
+      it 'updates the moved variable to true' do
+        expect { pawn_move.move }.to change { pawn_move.moved }.to true
       end
     end
   end
