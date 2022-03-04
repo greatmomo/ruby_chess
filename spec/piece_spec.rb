@@ -3,7 +3,5 @@
 require_relative '../lib/piece'
 
 describe Piece do
-  describe '#initialize' do
-    # check if piece is created properly?
-  end
+  # nothing to test?
 end
