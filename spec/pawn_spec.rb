@@ -81,4 +81,5 @@ describe Pawn do
   end
 
   # how do we check for attacks for pawns?
+  # redesign to take a board and check for enemy positions and such
 end
