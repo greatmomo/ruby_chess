@@ -2,3 +2,6 @@
 
 class Chess
 end
+
+# rank is rows (nums)
+# file is columns (letters)
