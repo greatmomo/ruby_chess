@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../lib/pawn'
 require_relative '../lib/board'
 
 describe Pawn do
@@ -15,30 +14,52 @@ describe Pawn do
     end
 
     context 'black pawn' do
-      subject(:pawn_init) { described_class.new('black') }
+      subject(:pawn_init) { described_class.new(board = Board.new, [3,6], 'black') }
 
       it 'color is black' do
-        expect(pawn_init.color).to eq('black')
+        expect(pawn_init.instance_variable_get(:@color)).to eq('black')
       end
     end
   end
 
   describe '#valid_moves' do
-    subject(:pawn_move) { described_class.new }
+    describe 'for a white pawn' do
+      subject(:pawn_move) { described_class.new(board = Board.new, [0,1], 'white') }
 
-    context "pawn hasn't moved" do
-      it 'can double move straight' do
-        expect(pawn_move.valid_moves).to include([0,1],[0,2])
+      context "white pawn hasn't moved" do
+        it 'can double move straight' do
+          expect(pawn_move.set_valid_moves(1)).to include([0,2],[0,3])
+        end
+      end
+
+      context "white pawn has moved" do
+        before do
+          pawn_move.instance_variable_set(:@moved, true)
+        end
+
+        it "can't double move straight" do
+          expect(pawn_move.set_valid_moves(1)).to include([0,2])
+        end
       end
     end
 
-    context "pawn has moved" do
-      before do
-        pawn_move.instance_variable_set(:@moved, true)
+    describe 'for a black pawn' do
+      subject(:pawn_move) { described_class.new(board = Board.new, [5,6], 'black') }
+
+      context "black pawn hasn't moved" do
+        it 'can double move straight' do
+          expect(pawn_move.set_valid_moves(-1)).to include([5,5],[5,4])
+        end
       end
 
-      it "can't double move straight" do
-        expect(pawn_move.valid_moves).to include([0,1])
+      context "black pawn has moved" do
+        before do
+          pawn_move.instance_variable_set(:@moved, true)
+        end
+
+        it "can't double move straight" do
+          expect(pawn_move.set_valid_moves(-1)).to include([5,5])
+        end
       end
     end
   end

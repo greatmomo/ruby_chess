@@ -3,7 +3,7 @@
 require_relative 'piece'
 
 class Pawn < Piece
-  attr_reader :moved, :symbol
+  attr_reader :moved
 
   def initialize(board, location, color)
     super
