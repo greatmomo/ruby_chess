@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 require_relative '../lib/pawn'
+require_relative '../lib/board'
 
 describe Pawn do
   describe '#initialize' do
     # check if valid moves array exists?
     context 'default pawn' do
-      subject(:pawn_init) { described_class.new }
+      subject(:pawn_init) { described_class.new(board = Board.new, [1,1], 'white') }
       
       it 'color is white' do
-        expect(pawn_init.color).to eq('white')
+        expect(pawn_init.instance_variable_get(:@color)).to eq('white')
       end
     end
 
