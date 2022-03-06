@@ -27,7 +27,9 @@ class Pawn < Piece
   end
 
   def set_valid_captures(dir)
-    # [[1, 1], [-1, 1]]
+    [[1, 1], [-1, 1]]
+
+    # this doesn't work yet!
   end
 
   def has_moved?
