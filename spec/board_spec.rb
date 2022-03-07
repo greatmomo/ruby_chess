@@ -65,7 +65,7 @@ describe Board do
       subject(:board_init) { described_class.new }
 
       it 'should have a white bishop at [2][0]' do
-        expect(board_init.squares[2][0]).to be_kind_of(WhiteKnight)
+        expect(board_init.squares[2][0]).to be_kind_of(WhiteBishop)
       end
     end
 
@@ -73,7 +73,7 @@ describe Board do
       subject(:board_init) { described_class.new }
 
       it 'should have a black bishop at [5][7]' do
-        expect(board_init.squares[5][7]).to be_kind_of(BlackKnight)
+        expect(board_init.squares[5][7]).to be_kind_of(BlackBishop)
       end
     end
   end
@@ -101,7 +101,7 @@ describe Board do
       subject(:board_init) { described_class.new }
 
       it 'should have a white king at [4][0]' do
-        expect(board_init.squares[4][0]).to be_kind_of(WhiteQueen)
+        expect(board_init.squares[4][0]).to be_kind_of(WhiteKing)
       end
     end
 
@@ -109,7 +109,7 @@ describe Board do
       subject(:board_init) { described_class.new }
 
       it 'should have a black king at [4][7]' do
-        expect(board_init.squares[4][7]).to be_kind_of(BlackQueen)
+        expect(board_init.squares[4][7]).to be_kind_of(BlackKing)
       end
     end
   end
