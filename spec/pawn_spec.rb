@@ -65,11 +65,23 @@ describe Pawn do
   end
 
   describe '#set_valid_captures' do
-    subject(:pawn_capture) { described_class.new(board = Board.new, [5, 5], 'white') }
+    describe 'white pawn' do
+      subject(:pawn_capture) { described_class.new(board = Board.new, [5, 5], 'white') }
 
-    context "white pawn attack moves" do
-      it 'either up diagonal' do
-        expect(pawn_capture.set_valid_captures(1)).to include([6, 6],[4, 6])
+      context "white pawn attack moves" do
+        it 'either up diagonal' do
+          expect(pawn_capture.set_valid_captures(1)).to include([6, 6],[4, 6])
+        end
+      end
+    end
+
+    describe 'black pawn' do
+      subject(:pawn_capture) { described_class.new(board = Board.new, [3, 2], 'black') }
+
+      context "black pawn attack moves" do
+        it 'either down diagonal' do
+          expect(pawn_capture.set_valid_captures(-1)).to include([2, 1],[4, 1])
+        end
       end
     end
   end
