@@ -27,9 +27,16 @@ class Pawn < Piece
   end
 
   def set_valid_captures(dir)
-    [[1, 1], [-1, 1]]
-
-    # this doesn't work yet!
+    moves = []
+    file = location[0]
+    rank = location[1] + 1 * dir
+    unless board.squares[file + 1][rank].nil? 
+      moves << [file + 1, rank] if board.squares[file - 1][rank].white? != white?
+    end
+    unless board.squares[file - 1][rank].nil? 
+      moves << [file - 1, rank] if board.squares[file - 1][rank].white? != white?
+    end
+    @valid_captures = moves
   end
 
   def has_moved?
