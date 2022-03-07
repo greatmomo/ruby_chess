@@ -16,13 +16,13 @@ describe Chess do
     subject(:game_input) { described_class.new }
 
     context 'when user selects a valid piece' do
-      it 'saves that piece as selected' do
+      xit 'saves that piece as selected' do
         expect { game_input.player_turn }.to change { game_input.selected }.to('piecename')
       end
     end
 
     context 'when user selects an invalid piece' do
-      it 'returns an error message' do
+      xit 'returns an error message' do
         expect(game_input).to receive(:puts).with(error_message).once
       end
     end
@@ -32,7 +32,7 @@ describe Chess do
     # this function should switch current_player between black and white when a valid move is made
     subject(:game_input) { described_class.new }
 
-    it 'toggles from white to black' do
+    xit 'toggles from white to black' do
       expect { game_input.toggle_player }.to change { game_input.current_player }.from('white').to('black')
     end
 
@@ -41,7 +41,7 @@ describe Chess do
         game_input.toggle_player
       end
 
-      it 'toggles from black to white' do
+      xit 'toggles from black to white' do
         expect { game_input.toggle_player }.to change { game_input.current_player }.from('black').to('white')
       end
     end
@@ -60,7 +60,7 @@ describe Chess do
         allow(game_input).to receive(:gets).and_return(valid_input)
       end
 
-      it 'stops loop and does not display error message' do
+      xit 'stops loop and does not display error message' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).not_to receive(:puts).with(error_message)
         game_input.player_input(min, max)
@@ -74,7 +74,7 @@ describe Chess do
         allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
       end
 
-      it 'completes loop and displays error message once' do
+      xit 'completes loop and displays error message once' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).to receive(:puts).with(error_message).once
         game_input.player_input(min, max)
@@ -88,7 +88,7 @@ describe Chess do
         allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
       end
 
-      it 'completes loop and displays error message once' do
+      xit 'completes loop and displays error message once' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).to receive(:puts).with(error_message).once
         game_input.player_input(min, max)
@@ -102,14 +102,14 @@ describe Chess do
     subject(:game_input) { described_class.new }
 
     context 'when given a selectable tile' do
-      it 'returns valid input' do
+      xit 'returns valid input' do
         valid_input = 'B2'
         expect(game_input.verify_input(valid_input)).to eq('B2')
       end
     end
 
     context 'when given invalid input as argument' do
-      it 'returns nil' do
+      xit 'returns nil' do
         invalid_input = '11'
         expect(game_input.verify_input(invalid_input)).to be_nil
       end
@@ -121,7 +121,7 @@ describe Chess do
     subject(:game_input) { described_class.new }
 
     context 'when it is not check' do
-      it 'returns false' do
+      xit 'returns false' do
         expect(game_input.check?).to be false
       end
     end
@@ -131,7 +131,7 @@ describe Chess do
         # make it be check
       end
 
-      it 'returns true' do
+      xit 'returns true' do
         expect(game_input.check?).to be true
       end
     end
@@ -142,7 +142,7 @@ describe Chess do
     subject(:game_input) { described_class.new }
 
     context 'when it is not check' do
-      it 'returns false' do
+      xit 'returns false' do
         expect(game_input.checkmate?).to be false
       end
     end
@@ -152,7 +152,7 @@ describe Chess do
         # make it be checkmate
       end
 
-      it 'returns true' do
+      xit 'returns true' do
         expect(game_input.checkmate?).to be true
       end
     end
