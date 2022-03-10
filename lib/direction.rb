@@ -13,4 +13,9 @@ module Direction
 
   # w/ rook, bishop, queen make a function that scans
   # the directions til end of board or piece
+  def self.direction_scan
+    movement = capture = []
+
+    return movement, capture
+  end
 end
