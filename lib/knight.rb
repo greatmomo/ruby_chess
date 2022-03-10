@@ -19,7 +19,7 @@ class Knight < Piece
     moves = []
     file = location[0]
     rank = location[1]
-    Direction.omni.each do |vector|
+    @@MOVESET.each do |vector|
       file_offset = file + vector[0]
       rank_offset = rank + vector[1]
       if file_offset.between?(0, Board::MAX) && 
@@ -35,9 +35,12 @@ class Knight < Piece
     moves = []
     file = location[0]
     rank = location[1]
-    Direction.omni.each do |vector|
+    @@MOVESET.each do |vector|
       file_offset = file + vector[0]
       rank_offset = rank + vector[1]
+      next unless file_offset.between?(0, Board::MAX) && 
+                  rank_offset.between?(0, Board::MAX)
+                  
       next if board.squares[file_offset][rank_offset].nil?
 
       if board.squares[file_offset][rank_offset].white? != white?

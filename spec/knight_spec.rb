@@ -60,7 +60,7 @@ describe Knight do
 
       context "black knight attack moves" do
         it 'no attacks' do
-          expect(knight_capture.set_valid_captures).to include([])
+          expect(knight_capture.set_valid_captures).to include()
         end
       end
     end
