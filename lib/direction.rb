@@ -11,11 +11,34 @@ module Direction
     @@omni
   end
 
+  def self.straights
+    @@straights
+  end
+
+  def self.diagonals
+    @@diagonals
+  end
+
   # w/ rook, bishop, queen make a function that scans
   # the directions til end of board or piece
-  def self.direction_scan
+  def self.direction_scan(direction, board, location, color)
     movement = capture = []
+    direction.each do |vector|
+      file = location[0] + vector[0]
+      rank = location[1] + vector[1]
+      while file.between?(0, Board::MAX) && 
+            rank.between?(0, Board::MAX) && 
+            board.squares[file][rank].nil?
+        movement += [[file, rank]]
+        file += vector[0]
+        rank += vector[1]
+      end
+      next unless file.between?(0, Board::MAX) && 
+                  rank.between?(0, Board::MAX) &&
+                  board.squares[file][rank]
 
+      capture += [[file, rank]] if board.squares[file][rank].white? == (color == "black")
+    end
     return movement, capture
   end
 end
