@@ -29,11 +29,15 @@ module Direction
       while file.between?(0, Board::MAX) && 
             rank.between?(0, Board::MAX) && 
             board.squares[file][rank].nil?
-        movement += [[file,rank]]
+        movement += [[file, rank]]
         file += vector[0]
         rank += vector[1]
       end
+      next unless file.between?(0, Board::MAX) && 
+                  rank.between?(0, Board::MAX) &&
+                  board.squares[file][rank]
 
+      capture += [[file, rank]] if board.squares[file][rank].white? == (color == "black")
     end
     return movement, capture
   end
