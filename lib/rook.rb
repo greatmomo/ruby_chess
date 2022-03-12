@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require_relative 'piece'
+require_relative 'direction'
 
 class Rook < Piece
+  include Direction
+
   attr_reader :moved
 
   def initialize(board, location, color)
@@ -14,9 +17,7 @@ class Rook < Piece
   end
 
   def set_valid_moves
-    
-    @valid_moves
-    @valid_captures
+    @valid_moves, @valid_captures = Direction.direction_scan(Direction.straights, board, location, color)
   end
 
   def set_valid_captures

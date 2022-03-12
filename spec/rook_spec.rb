@@ -33,10 +33,10 @@ describe Rook do
 
       context "white rook at 2,3" do
         it 'can move to 10 spaces and capture 1' do
-          expect(rook_move.instance_variable_get(:valid_moves)).to include([2, 4],[2, 5],[2, 2],
-          [0, 3],[1, 3],[3, 3],[4, 3],[5, 3],[6, 3],[7, 3])
-          expect(rook_move.instance_variable_get(:valid_captures)).to include([2, 6])
           rook_move.set_valid_moves
+          expect(rook_move.instance_variable_get(:@valid_moves)).to include([2, 4],[2, 5],[2, 2],
+          [0, 3],[1, 3],[3, 3],[4, 3],[5, 3],[6, 3],[7, 3])
+          expect(rook_move.instance_variable_get(:@valid_captures)).to include([2, 6])
         end
       end
     end
@@ -46,10 +46,10 @@ describe Rook do
 
       context "black rook at 6,5" do
         it 'can move to 10 spaces and capture 1' do
+          rook_move.set_valid_moves
           expect(rook_move.instance_variable_get(:@valid_moves)).to include([6, 4],[6, 3],[6, 2],
             [0, 5],[1, 5],[2, 5],[3, 5],[4, 5],[5, 5],[7, 5])
           expect(rook_move.instance_variable_get(:@valid_captures)).to include([6, 1])
-          rook_move.set_valid_moves
         end
       end
     end
