@@ -12,6 +12,14 @@ class Bishop < Piece
   def to_s
     white? ? '♝'.gray : '♝'.black
   end
+
+  def set_valid_moves
+    @valid_moves, @valid_captures = Direction.direction_scan(Direction.diagonals, board, location, color)
+  end
+
+  def set_valid_captures
+    # handled by set_valid_moves
+  end
 end
 
 class WhiteBishop < Bishop
