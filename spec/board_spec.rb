@@ -120,6 +120,11 @@ describe Board do
         expect(board_init.squares[1][1].instance_variable_get(:@valid_moves)).to include([1, 2],[1, 3])
         expect(board_init.squares[1][1].instance_variable_get(:@valid_captures)).to_not include([0, 2],[2, 2])
       end
+
+      it 'should have proper moves on a knight' do
+        expect(board_init.squares[1][7].instance_variable_get(:@valid_moves)).to include([0, 5],[2, 5])
+        expect(board_init.squares[1][7].instance_variable_get(:@valid_captures)).to_not include([3, 6],[0, 5],[2, 5])
+      end
     end
   end
 end
