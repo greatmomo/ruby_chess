@@ -30,10 +30,10 @@ class Pawn < Piece
     moves = []
     file = location[0]
     rank = location[1] + 1 * dir
-    unless board.squares[file + 1][rank].nil? 
+    if file < 7 && board.squares[file + 1][rank]
       moves << [file + 1, rank] if board.squares[file - 1][rank].white? != white?
     end
-    unless board.squares[file - 1][rank].nil? 
+    if file > 0 && board.squares[file - 1][rank]
       moves << [file - 1, rank] if board.squares[file - 1][rank].white? != white?
     end
     @valid_captures = moves

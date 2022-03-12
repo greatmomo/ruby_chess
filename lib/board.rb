@@ -43,5 +43,13 @@ class Board
 
   def set_moves_and_captures
     # this should calculate for every piece
+    squares.each do |file|
+      file.each do |piece|
+        if piece
+          piece.set_valid_moves
+          piece.set_valid_captures
+        end
+      end
+    end
   end
 end
