@@ -12,6 +12,16 @@ class Rook < Piece
   def to_s
     white? ? '♜'.gray : '♜'.black
   end
+
+  def set_valid_moves
+    
+    @valid_moves
+    @valid_captures
+  end
+
+  def set_valid_captures
+    # handled by set_valid_moves
+  end
 end
 
 class WhiteRook < Rook
