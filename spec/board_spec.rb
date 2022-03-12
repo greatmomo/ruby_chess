@@ -58,58 +58,67 @@ describe Board do
         end
       end
     end
-  end
 
-  context 'bishops' do
-    context 'has a white bishop in the correct position' do
-      subject(:board_init) { described_class.new }
+    context 'bishops' do
+      context 'has a white bishop in the correct position' do
+        subject(:board_init) { described_class.new }
 
-      it 'should have a white bishop at [2][0]' do
-        expect(board_init.squares[2][0]).to be_kind_of(WhiteBishop)
+        it 'should have a white bishop at [2][0]' do
+          expect(board_init.squares[2][0]).to be_kind_of(WhiteBishop)
+        end
+      end
+
+      context 'has a black bishop in the correct position' do
+        subject(:board_init) { described_class.new }
+
+        it 'should have a black bishop at [5][7]' do
+          expect(board_init.squares[5][7]).to be_kind_of(BlackBishop)
+        end
       end
     end
 
-    context 'has a black bishop in the correct position' do
-      subject(:board_init) { described_class.new }
+    context 'queen' do
+      context 'has a white queen in the correct position' do
+        subject(:board_init) { described_class.new }
 
-      it 'should have a black bishop at [5][7]' do
-        expect(board_init.squares[5][7]).to be_kind_of(BlackBishop)
+        it 'should have a white queen at [3][0]' do
+          expect(board_init.squares[3][0]).to be_kind_of(WhiteQueen)
+        end
       end
-    end
-  end
 
-  context 'queen' do
-    context 'has a white queen in the correct position' do
-      subject(:board_init) { described_class.new }
+      context 'has a black queen in the correct position' do
+        subject(:board_init) { described_class.new }
 
-      it 'should have a white queen at [3][0]' do
-        expect(board_init.squares[3][0]).to be_kind_of(WhiteQueen)
-      end
-    end
-
-    context 'has a black queen in the correct position' do
-      subject(:board_init) { described_class.new }
-
-      it 'should have a black queen at [3][7]' do
-        expect(board_init.squares[3][7]).to be_kind_of(BlackQueen)
-      end
-    end
-  end
-
-  context 'king' do
-    context 'has a white king in the correct position' do
-      subject(:board_init) { described_class.new }
-
-      it 'should have a white king at [4][0]' do
-        expect(board_init.squares[4][0]).to be_kind_of(WhiteKing)
+        it 'should have a black queen at [3][7]' do
+          expect(board_init.squares[3][7]).to be_kind_of(BlackQueen)
+        end
       end
     end
 
-    context 'has a black king in the correct position' do
+    context 'king' do
+      context 'has a white king in the correct position' do
+        subject(:board_init) { described_class.new }
+
+        it 'should have a white king at [4][0]' do
+          expect(board_init.squares[4][0]).to be_kind_of(WhiteKing)
+        end
+      end
+
+      context 'has a black king in the correct position' do
+        subject(:board_init) { described_class.new }
+
+        it 'should have a black king at [4][7]' do
+          expect(board_init.squares[4][7]).to be_kind_of(BlackKing)
+        end
+      end
+    end
+
+    context 'set_moves_and_captures' do
       subject(:board_init) { described_class.new }
 
-      it 'should have a black king at [4][7]' do
-        expect(board_init.squares[4][7]).to be_kind_of(BlackKing)
+      it 'should have proper moves on a pawn' do
+        expect(board_init.squares[1][1].instance_variable_get(:@valid_moves)).to include([1, 2],[1, 3])
+        expect(board_init.squares[1][1].instance_variable_get(:@valid_captures)).to_not include([0, 2],[2, 2])
       end
     end
   end
