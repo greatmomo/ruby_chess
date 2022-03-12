@@ -22,11 +22,6 @@ describe Rook do
     end
   end
 
-  # for rook, need some kind of directional scanning function
-  # pass a vector to it (ex. [1,1]), and have it scan in that direction
-  # until finding a piece or end of board
-  # so in [1,1] case, while [conditions] add +1 to temp rank and file vars
-  # queen would scan [0,1],[1,1],[1,0],[0,-1],[-1,-1],[-1,0],[1,-1],[-1,1]
   describe '#set_valid_moves' do
     describe 'for a white rook' do
       subject(:rook_move) { described_class.new(board = Board.new, [2, 3], 'white') }
