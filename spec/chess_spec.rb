@@ -133,22 +133,29 @@ describe Chess do
     end
   end
 
-  describe '#verify_input' do
+  describe '#verify_selection' do
     # Located inside #play_game (Looping Script Method)
     # Query Method -> Test the return value
     subject(:game_input) { described_class.new }
 
     context 'when given a selectable tile' do
-      xit 'returns valid input' do
-        valid_input = 'B2'
-        expect(game_input.verify_input(valid_input)).to eq('B2')
+      it 'returns valid input' do
+        valid_input = [1, 1]
+        expect { game_input.verify_selection(valid_input) }.to change { game_input.selected }.from([]).to([1, 1])
       end
     end
 
-    context 'when given invalid input as argument' do
-      xit 'returns nil' do
-        invalid_input = '11'
-        expect(game_input.verify_input(invalid_input)).to be_nil
+    context 'when given a tile with no piece' do
+      it 'no valid input' do
+        invalid_input = [3, 2]
+        expect { game_input.verify_selection(invalid_input) }.not_to change { game_input.selected }.from([]).to([3, 2])
+      end
+    end
+
+    context 'when given a tile with the wrong color' do
+      it 'no valid input' do
+        valid_input = [7, 6]
+        expect { game_input.verify_selection(valid_input) }.not_to change { game_input.selected }.from([]).to([7, 6])
       end
     end
   end
