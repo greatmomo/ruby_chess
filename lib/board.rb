@@ -52,4 +52,8 @@ class Board
       end
     end
   end
+
+  def toggle_player
+    @white_to_move = !@white_to_move
+  end
 end

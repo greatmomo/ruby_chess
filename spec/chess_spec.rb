@@ -32,17 +32,14 @@ describe Chess do
     # this function should switch current_player between black and white when a valid move is made
     subject(:game_input) { described_class.new }
 
-    xit 'toggles from white to black' do
-      expect { game_input.toggle_player }.to change { game_input.current_player }.from('white').to('black')
+    it 'toggles from white to black' do
+      expect { game_input.toggle_player }.to change { game_input.board.white_to_move }.from(true).to(false)
     end
 
     context 'toggle twice to go from black to white' do
-      before do
+      it 'toggles from black to white' do
         game_input.toggle_player
-      end
-
-      xit 'toggles from black to white' do
-        expect { game_input.toggle_player }.to change { game_input.current_player }.from('black').to('white')
+        expect { game_input.toggle_player }.to change { game_input.board.white_to_move }.from(false).to(true)
       end
     end
   end
@@ -60,24 +57,24 @@ describe Chess do
         allow(game_input).to receive(:gets).and_return(valid_input)
       end
 
-      xit 'stops loop and does not display error message' do
+      it 'stops loop and does not display error message' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).not_to receive(:puts).with(error_message)
-        game_input.player_input(min, max)
+        game_input.player_input
       end
     end
 
     context 'when the user enters two letters, then a valid tile' do
       before do
-        invalid_input = 'BC'
-        valid_input = 'B7'
+        invalid_input = 'bC'
+        valid_input = 'b7'
         allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
       end
 
-      xit 'completes loop and displays error message once' do
+      it 'completes loop and displays error message once' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).to receive(:puts).with(error_message).once
-        game_input.player_input(min, max)
+        game_input.player_input
       end
     end
 
@@ -88,30 +85,77 @@ describe Chess do
         allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
       end
 
-      xit 'completes loop and displays error message once' do
+      it 'completes loop and displays error message once' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).to receive(:puts).with(error_message).once
-        game_input.player_input(min, max)
+        game_input.player_input
+      end
+    end
+
+    context 'when the user enters two values outside the range, then a valid tile' do
+      before do
+        invalid_input1 = 'Z2'
+        invalid_input2 = 'e0'
+        valid_input = 'C6'
+        allow(game_input).to receive(:gets).and_return(invalid_input1, invalid_input2, valid_input)
+      end
+
+      it 'completes loop and displays error message once' do
+        error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
+        expect(game_input).to receive(:puts).with(error_message).once
+        game_input.player_input
+      end
+    end
+
+    context 'when the user enters more than two values, then a valid tile' do
+      before do
+        invalid_input = 'aBcD'
+        valid_input = 'h8'
+        allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
+      end
+
+      it 'completes loop and displays error message once' do
+        error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
+        expect(game_input).to receive(:puts).with(error_message).once
+        game_input.player_input
+      end
+    end
+
+    context 'when the user enters a valid value' do
+      before do
+        valid_input = 'h8'
+        allow(game_input).to receive(:gets).and_return(valid_input)
+      end
+
+      it 'gets the correct [file, rank] array' do
+        expect(game_input.player_input).to eq([7, 7])
       end
     end
   end
 
-  describe '#verify_input' do
+  describe '#verify_selection' do
     # Located inside #play_game (Looping Script Method)
     # Query Method -> Test the return value
     subject(:game_input) { described_class.new }
 
     context 'when given a selectable tile' do
-      xit 'returns valid input' do
-        valid_input = 'B2'
-        expect(game_input.verify_input(valid_input)).to eq('B2')
+      it 'returns valid input' do
+        valid_input = [1, 1]
+        expect { game_input.verify_selection(valid_input) }.to change { game_input.selected }.from([]).to([1, 1])
       end
     end
 
-    context 'when given invalid input as argument' do
-      xit 'returns nil' do
-        invalid_input = '11'
-        expect(game_input.verify_input(invalid_input)).to be_nil
+    context 'when given a tile with no piece' do
+      it 'no valid input' do
+        invalid_input = [3, 2]
+        expect { game_input.verify_selection(invalid_input) }.not_to change { game_input.selected }.from([]).to([3, 2])
+      end
+    end
+
+    context 'when given a tile with the wrong color' do
+      it 'no valid input' do
+        valid_input = [7, 6]
+        expect { game_input.verify_selection(valid_input) }.not_to change { game_input.selected }.from([]).to([7, 6])
       end
     end
   end
