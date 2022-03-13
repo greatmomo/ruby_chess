@@ -57,24 +57,24 @@ describe Chess do
         allow(game_input).to receive(:gets).and_return(valid_input)
       end
 
-      xit 'stops loop and does not display error message' do
+      it 'stops loop and does not display error message' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).not_to receive(:puts).with(error_message)
-        game_input.player_input(min, max)
+        game_input.player_input
       end
     end
 
     context 'when the user enters two letters, then a valid tile' do
       before do
-        invalid_input = 'BC'
-        valid_input = 'B7'
+        invalid_input = 'bC'
+        valid_input = 'b7'
         allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
       end
 
-      xit 'completes loop and displays error message once' do
+      it 'completes loop and displays error message once' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).to receive(:puts).with(error_message).once
-        game_input.player_input(min, max)
+        game_input.player_input
       end
     end
 
@@ -85,10 +85,49 @@ describe Chess do
         allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
       end
 
-      xit 'completes loop and displays error message once' do
+      it 'completes loop and displays error message once' do
         error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
         expect(game_input).to receive(:puts).with(error_message).once
-        game_input.player_input(min, max)
+        game_input.player_input
+      end
+    end
+
+    context 'when the user enters two values outside the range, then a valid tile' do
+      before do
+        invalid_input1 = 'Z2'
+        invalid_input2 = 'e0'
+        valid_input = 'C6'
+        allow(game_input).to receive(:gets).and_return(invalid_input1, invalid_input2, valid_input)
+      end
+
+      it 'completes loop and displays error message once' do
+        error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
+        expect(game_input).to receive(:puts).with(error_message).once
+        game_input.player_input
+      end
+    end
+
+    context 'when the user enters more than two values, then a valid tile' do
+      before do
+        invalid_input = 'aBcD'
+        valid_input = 'h8'
+        allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
+      end
+
+      it 'completes loop and displays error message once' do
+        error_message = "Input error! Please enter a value between a1 and h8 in chess notation."
+        expect(game_input).to receive(:puts).with(error_message).once
+        game_input.player_input
+      end
+    end
+
+    context 'when the user enters a valid value' do
+      before do
+        
+      end
+
+      it 'gets the correct [file, rank] array' do
+        expect(game_input).to 
       end
     end
   end
