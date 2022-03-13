@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
-class Chess
-end
+require_relative 'board'
 
-# rank is rows (nums)
-# file is columns (letters)
+class Chess
+  attr_reader :board
+
+  def initialize
+    @board = Board.new
+  end
+
+  def toggle_player
+    @board.toggle_player
+  end
+end

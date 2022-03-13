@@ -32,17 +32,14 @@ describe Chess do
     # this function should switch current_player between black and white when a valid move is made
     subject(:game_input) { described_class.new }
 
-    xit 'toggles from white to black' do
-      expect { game_input.toggle_player }.to change { game_input.current_player }.from('white').to('black')
+    it 'toggles from white to black' do
+      expect { game_input.toggle_player }.to change { game_input.board.white_to_move }.from(true).to(false)
     end
 
     context 'toggle twice to go from black to white' do
-      before do
+      it 'toggles from black to white' do
         game_input.toggle_player
-      end
-
-      xit 'toggles from black to white' do
-        expect { game_input.toggle_player }.to change { game_input.current_player }.from('black').to('white')
+        expect { game_input.toggle_player }.to change { game_input.board.white_to_move }.from(false).to(true)
       end
     end
   end
