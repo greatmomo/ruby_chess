@@ -123,11 +123,12 @@ describe Chess do
 
     context 'when the user enters a valid value' do
       before do
-        
+        valid_input = 'h8'
+        allow(game_input).to receive(:gets).and_return(valid_input)
       end
 
       it 'gets the correct [file, rank] array' do
-        expect(game_input).to 
+        expect(game_input.player_input).to eq([7, 7])
       end
     end
   end

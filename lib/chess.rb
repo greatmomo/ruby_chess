@@ -15,7 +15,7 @@ class Chess
 
   def player_input
     input = gets.chomp
-    return [input[0].downcase.ord - 97, input[1].to_i] if input.length == 2 &&
+    return [input[0].downcase.ord - 97, input[1].to_i - 1] if input.length == 2 &&
                                                           input[0] =~ /[A-Ha-h]/ &&
                                                           input[1] =~ /[1-8]/
 
