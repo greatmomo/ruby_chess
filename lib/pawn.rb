@@ -31,7 +31,7 @@ class Pawn < Piece
     file = location[0]
     rank = location[1] + 1 * dir
     if file < 7 && board.squares[file + 1][rank]
-      moves << [file + 1, rank] if board.squares[file - 1][rank].white? != white?
+      moves << [file + 1, rank] if board.squares[file + 1][rank].white? != white?
     end
     if file > 0 && board.squares[file - 1][rank]
       moves << [file - 1, rank] if board.squares[file - 1][rank].white? != white?
