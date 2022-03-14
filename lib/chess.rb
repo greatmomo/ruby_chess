@@ -26,7 +26,7 @@ class Chess
   def verify_selection(input)
     unless @board.squares[input[0]][input[1]].nil?
       if (@board.squares[input[0]][input[1]].white? == @board.white_to_move) && selected == []
-        selected = [input[0], input[1]]
+        @selected = [input[0], input[1]]
         return true
       end
     end

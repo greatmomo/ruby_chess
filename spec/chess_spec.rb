@@ -148,14 +148,14 @@ describe Chess do
     context 'when given a tile with no piece' do
       it 'no valid input' do
         invalid_input = [3, 2]
-        expect { game_input.verify_selection(invalid_input) }.not_to change { game_input.selected }.from([]).to([3, 2])
+        expect { game_input.verify_selection(invalid_input) }.not_to change { game_input.selected }
       end
     end
 
     context 'when given a tile with the wrong color' do
       it 'no valid input' do
-        valid_input = [7, 6]
-        expect { game_input.verify_selection(valid_input) }.not_to change { game_input.selected }.from([]).to([7, 6])
+        invalid_input = [7, 6]
+        expect { game_input.verify_selection(invalid_input) }.not_to change { game_input.selected }
       end
     end
   end
