@@ -160,6 +160,37 @@ describe Chess do
     end
   end
 
+  describe '#verify_movement' do
+    # Located inside #play_game (Looping Script Method)
+    # Query Method -> Test the return value
+    subject(:game_input) { described_class.new }
+
+    context 'when a valid move' do
+      it 'returns true' do
+        game_input.instance_variable_set(:@selected, [1, 1])
+        valid_input = [1, 3]
+        expect(game_input.verify_movement(valid_input)).to be true
+      end
+    end
+
+    context 'when given a valid capture' do
+      it 'returns true' do
+        game_input.board.squares[2][2] = BlackRook.new(game_input.board, [2, 2])
+        game_input.board.set_moves_and_captures
+        game_input.instance_variable_set(:@selected, [1, 1])
+        valid_input = [2, 2]
+        expect(game_input.verify_movement(valid_input)).to be true
+      end
+    end
+
+    context 'when given an invalid move' do
+      xit 'no valid input' do
+        invalid_input = [7, 6]
+        expect { game_input.verify_movement(invalid_input) }.not_to change { game_input.selected }
+      end
+    end
+  end
+
   describe '#check?' do
     # when a move is made, check if it is check
     subject(:game_input) { described_class.new }

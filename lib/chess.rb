@@ -22,14 +22,28 @@ class Chess
 
     puts 'Input error! Please enter a value between a1 and h8 in chess notation.'
   end
+  
+  def square_get(input)
+    # helper function, because this gets typed so much
+    @board.squares[input[0]][input[1]] if input.length == 2
+  end
 
   def verify_selection(input)
-    unless @board.squares[input[0]][input[1]].nil?
-      if (@board.squares[input[0]][input[1]].white? == @board.white_to_move) && selected == []
+    unless square_get(input).nil?
+      if (square_get(input).white? == @board.white_to_move) && selected == []
         @selected = [input[0], input[1]]
         return true
       end
     end
+    false
+  end
+
+  def verify_movement(input)
+    return false if @selected == []
+
+    return true if square_get(@selected).valid_moves.include?(input) ||
+                   square_get(@selected).valid_captures.include?(input)
+
     false
   end
 end
