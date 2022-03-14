@@ -202,6 +202,21 @@ describe Chess do
     end
   end
 
+  describe '#make_move' do
+    # change target to the expected piece
+    # remove captured piece 
+    # make sure there aren't two copies of moving piece
+    subject(:game_input) { described_class.new }
+
+    context 'when a piece moves' do
+
+    end
+
+    context 'when a piece captures' do
+      
+    end
+  end
+
   describe '#check?' do
     # when a move is made, check if it is check
     subject(:game_input) { described_class.new }
