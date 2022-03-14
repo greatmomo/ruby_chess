@@ -184,10 +184,20 @@ describe Chess do
     end
 
     context 'when given an invalid move' do
-      it 'no valid input' do
+      it 'returns false' do
         game_input.instance_variable_set(:@selected, [1, 1])
         invalid_input = [7, 6]
         expect(game_input.verify_movement(invalid_input)).to be false
+      end
+    end
+
+    context 'when given a capture of an allied piece' do
+      it 'returns false' do
+        game_input.board.squares[3][5] = BlackRook.new(game_input.board, [3, 5])
+        game_input.board.set_moves_and_captures
+        game_input.instance_variable_set(:@selected, [2, 6])
+        valid_input = [3, 5]
+        expect(game_input.verify_movement(valid_input)).to be false
       end
     end
   end
