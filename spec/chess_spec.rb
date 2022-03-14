@@ -184,9 +184,10 @@ describe Chess do
     end
 
     context 'when given an invalid move' do
-      xit 'no valid input' do
+      it 'no valid input' do
+        game_input.instance_variable_set(:@selected, [1, 1])
         invalid_input = [7, 6]
-        expect { game_input.verify_movement(invalid_input) }.not_to change { game_input.selected }
+        expect(game_input.verify_movement(invalid_input)).to be false
       end
     end
   end
