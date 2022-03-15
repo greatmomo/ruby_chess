@@ -48,9 +48,7 @@ class Chess
   end
 
   def make_move(input)
-    puts "selected: #{@board.squares[@selected[0]][@selected[1]]}\ntarget: #{@board.squares[input[0]][input[1]]}"
     @board.squares[input[0]][input[1]] = @board.squares[@selected[0]][@selected[1]].dup
-    @board.squares[@selected[0]][@selected[1]] = []
-    puts "selected: #{@board.squares[@selected[0]][@selected[1]]}\ntarget: #{@board.squares[input[0]][input[1]]}"
+    @board.squares[@selected[0]][@selected[1]] = nil
   end
 end

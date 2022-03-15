@@ -230,7 +230,33 @@ describe Chess do
     end
 
     context 'when a piece captures' do
+      it "moves the piece's location" do
+        game_input.board.squares[2][2] = BlackRook.new(game_input.board, [2, 2])
+        game_input.instance_variable_set(:@selected, [1, 1])
+        valid_input = [2, 2]
+        expect { game_input.make_move(valid_input) }.to change {
+          game_input.board.squares[1][1].instance_of? WhitePawn }.from(true).to(false)
+      end
+    end
 
+    context 'when a piece captures' do
+      it "removes the piece from the old location" do
+        game_input.board.squares[2][2] = BlackRook.new(game_input.board, [2, 2])
+        game_input.instance_variable_set(:@selected, [1, 1])
+        valid_input = [2, 2]
+        expect { game_input.make_move(valid_input) }.to change {
+          game_input.board.squares[2][2].instance_of? BlackRook }.from(true).to(false)
+      end
+    end
+
+    context 'when a piece captures' do
+      it "removes the piece from the old location" do
+        game_input.board.squares[2][2] = BlackRook.new(game_input.board, [2, 2])
+        game_input.instance_variable_set(:@selected, [1, 1])
+        valid_input = [2, 2]
+        expect { game_input.make_move(valid_input) }.to change {
+          game_input.board.squares[2][2].instance_of? WhitePawn }.from(false).to(true)
+      end
     end
   end
 
