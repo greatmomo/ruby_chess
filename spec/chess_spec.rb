@@ -215,7 +215,17 @@ describe Chess do
       it "moves the piece's location" do
         game_input.instance_variable_set(:@selected, [1, 1])
         valid_input = [1, 2]
-        expect { game_input.make_move(valid_input) }.to change { game_input.board.squares[1][1].location }.from([1, 1]).to([1, 2])
+        expect { game_input.make_move(valid_input) }.to change {
+          game_input.board.squares[1][1].instance_of? WhitePawn }.from(true).to(false)
+      end
+    end
+
+    context 'when a piece moves' do
+      it "removes the piece from the old location" do
+        game_input.instance_variable_set(:@selected, [1, 1])
+        valid_input = [1, 2]
+        expect { game_input.make_move(valid_input) }.to change {
+          game_input.board.squares[1][2].instance_of? WhitePawn }.from(false).to(true)
       end
     end
 
