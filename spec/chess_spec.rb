@@ -212,7 +212,11 @@ describe Chess do
     subject(:game_input) { described_class.new }
 
     context 'when a piece moves' do
-
+      it "moves the piece's location" do
+        game_input.instance_variable_set(:@selected, [1, 1])
+        valid_input = [1, 2]
+        expect { game_input.make_move(valid_input) }.to change { game_input.board.squares[1][1].location }.from([1, 1]).to([1, 2])
+      end
     end
 
     context 'when a piece captures' do
