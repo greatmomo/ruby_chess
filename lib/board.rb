@@ -56,4 +56,18 @@ class Board
   def toggle_player
     @white_to_move = !@white_to_move
   end
+
+  def to_s
+    output = ''
+    (7).downto(0).each do |rank|
+      (0..7).each do |file|
+        output += "#{squares[file][rank]} "
+      end
+      output += "\n"
+    end
+    output
+  end
 end
+
+board = Board.new
+puts "#{board.to_s}"

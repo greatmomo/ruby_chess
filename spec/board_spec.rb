@@ -127,4 +127,15 @@ describe Board do
       end
     end
   end
+
+  describe '#to_s' do
+    context 'starting board' do
+      subject(:board_print) { described_class.new }
+
+      it 'prints as expected' do
+        printed_board = ''
+        expect(board_print.to_s).to eq(printed_board)
+      end
+    end
+  end
 end
