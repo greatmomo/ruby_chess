@@ -61,7 +61,19 @@ class Board
     output = ''
     (7).downto(0).each do |rank|
       (0..7).each do |file|
-        output += "#{squares[file][rank]} "
+        if file % 2 == 0
+          if rank % 2 == 0
+            output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"} "
+          else
+            output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"} ".bg_yellow
+          end
+        else
+          if rank % 2 == 0
+            output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"} ".bg_yellow
+          else
+            output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"} "
+          end
+        end
       end
       output += "\n"
     end
