@@ -58,8 +58,9 @@ class Board
   end
 
   def to_s
-    output = ''
+    output = "  A B C D E F G H\n".blue
     (7).downto(0).each do |rank|
+      output += "#{rank + 1} ".blue
       (0..7).each do |file|
         if file % 2 == 0
           if rank % 2 == 0
@@ -77,9 +78,10 @@ class Board
           end
         end
       end
+      output += " #{rank + 1}".blue
       output += "\n"
     end
-    output
+    output += "  A B C D E F G H".blue
   end
 end
 
