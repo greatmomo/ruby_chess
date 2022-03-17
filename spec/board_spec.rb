@@ -127,4 +127,44 @@ describe Board do
       end
     end
   end
+
+  describe '#to_s' do
+    context 'starting board' do
+      subject(:board_print) { described_class.new }
+
+      xit 'prints as expected' do
+        printed_board = "\e[43m\e[30m♜\e[0m \e[0m\e[30m♞\e[0m \e[43m\e[30m♝\e[0m "\
+                        "\e[0m\e[30m♛\e[0m \e[43m\e[30m♚\e[0m \e[0m\e[30m♝\e[0m "\
+                        "\e[43m\e[30m♞\e[0m \e[0m\e[30m♜\e[0m \n"\
+                        "\e[0m\e[30m♟\e[0m \e[43m\e[30m♟\e[0m \e[0m\e[30m♟\e[0m "\
+                        "\e[43m\e[30m♟\e[0m \e[0m\e[30m♟\e[0m \e[43m\e[30m♟\e[0m "\
+                        "\e[0m\e[30m♟\e[0m \e[43m\e[30m♟\e[0m \n"\
+                        "\e[43m  \e[0m  \e[43m  "\
+                        "\e[0m  \e[43m  \e[0m\e[30m  "\
+                        "\e[43m  \e[0m  \n"\
+                        "\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m"\
+                        "\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m"\
+                        "\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m\n"\
+                        "\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m"\
+                        "\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m"\
+                        "\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m\n"\
+                        "\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m"\
+                        "\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m"\
+                        "\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m\n"\
+                        "\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m"\
+                        "\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m"\
+                        "\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m\n"\
+                        "\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m"\
+                        "\e[43m\e[30m  \e[0m\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m"\
+                        "\e[0m\e[30m  \e[0m\e[43m\e[30m  \e[0m\n"\
+                        "\e[43m\e[37m♟\e[0m \e[0m\e[37m♟\e[0m \e[43m\e[37m♟\e[0m "\
+                        "\e[0m\e[37m♟\e[0m \e[43m\e[37m♟\e[0m \e[0m\e[37m♟\e[0m "\
+                        "\e[43m\e[37m♟\e[0m \e[0m\e[37m♟\e[0m "
+                        "\e[0m\e[37m♜\e[0m \e[43m\e[37m♞\e[0m \e[0m\e[37m♝\e[0m "\
+                        "\e[43m\e[37m♛\e[0m \e[0m\e[37m♚\e[0m \e[43m\e[37m♝\e[0m "\
+                        "\e[0m\e[37m♞\e[0m \e[43m\e[37m♜\e[0m "
+        expect(board_print.to_s).to eq(printed_board)
+      end
+    end
+  end
 end
