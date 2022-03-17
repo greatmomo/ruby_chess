@@ -65,11 +65,13 @@ class Board
           if rank % 2 == 0
             output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"} "
           else
-            output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"} ".bg_yellow
+            output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"}".bg_blue
+            output += " ".bg_blue
           end
         else
           if rank % 2 == 0
-            output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"} ".bg_yellow
+            output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"}".bg_blue
+            output += " ".bg_blue
           else
             output += "#{squares[file][rank].nil? ? " " : "#{squares[file][rank]}"} "
           end
