@@ -18,7 +18,7 @@ describe Chess do
     # use enumerator take_while method
     # https://stackoverflow.com/questions/6886770/idiomatic-ruby-execute-a-function-until-it-returns-a-nil-collecting-its-value
 
-    context 'when user selects a valid piece' do
+    context 'when user selects a valid piece and destination' do
       xit 'saves that piece as selected' do
         expect { game_input.player_turn }.to change { game_input.selected }.to('piecename')
       end
