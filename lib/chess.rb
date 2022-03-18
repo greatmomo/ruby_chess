@@ -14,6 +14,19 @@ class Chess
     @board.toggle_player
   end
 
+  def player_turn
+    puts "#{board.to_s}"
+    # puts player_prompt
+    input = []
+    until input[0] = player_input && verify_selection(input[0])
+    end
+
+    until input[1] = player_input && verify_movement(input[1])
+    end
+
+    make_move(input)
+  end
+
   def player_input
     input = gets.chomp
     return [input[0].downcase.ord - 97, input[1].to_i - 1] if input.length == 2 &&

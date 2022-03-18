@@ -19,8 +19,10 @@ describe Chess do
     # https://stackoverflow.com/questions/6886770/idiomatic-ruby-execute-a-function-until-it-returns-a-nil-collecting-its-value
 
     context 'when user selects a valid piece and destination' do
-      xit 'saves that piece as selected' do
-        expect { game_input.player_turn }.to change { game_input.selected }.to('piecename')
+      it 'saves that piece as selected' do
+        allow(game_input).to receive(:gets).and_return('a2', 'a3')
+        expect { game_input.player_turn }.to change {
+          game_input.board.squares[0][2].instance_of? WhitePawn }.from(false).to(true)
       end
     end
 
