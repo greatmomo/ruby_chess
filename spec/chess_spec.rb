@@ -12,25 +12,7 @@ describe Chess do
   end
 
   describe '#player_turn' do
-    # Loops until valid input is entered
-    subject(:game_input) { described_class.new }
-
-    # use enumerator take_while method
-    # https://stackoverflow.com/questions/6886770/idiomatic-ruby-execute-a-function-until-it-returns-a-nil-collecting-its-value
-
-    context 'when user selects a valid piece and destination' do
-      it 'saves that piece as selected' do
-        allow(game_input).to receive(:gets).and_return('a2', 'a3')
-        expect { game_input.player_turn }.to change {
-          game_input.board.squares[0][2].instance_of? WhitePawn }.from(false).to(true)
-      end
-    end
-
-    context 'when user selects an invalid piece' do
-      xit 'returns an error message' do
-        expect(game_input).to receive(:puts).with(error_message).once
-      end
-    end
+    # script function?
   end
 
   describe '#toggle_player' do

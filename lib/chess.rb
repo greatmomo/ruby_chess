@@ -18,6 +18,7 @@ class Chess
     player_turn
 
     puts "#{board.to_s}"
+    puts "Checkmate! #{board.white_to_move ? "White" : "Black"} wins!"
   end
 
   def player_turn
@@ -26,17 +27,28 @@ class Chess
     input = []
     while 1
       input = player_input
-      break if verify_selection(input)
+      if verify_selection(input)
+        break
+      else
+        puts "Please select a #{board.white_to_move ? "white" : "black"} piece with valid moves"
+      end
     end
 
     while 1
       input = player_input
-      break if verify_movement(input)
+      if verify_movement(input)
+        break
+      else
+        puts "Please select a valid location to move to, or press q to deselect this piece"
+      end
     end
 
     puts "input = #{input}"
     make_move(input)
     @selected = []
+
+    # if check, do a thing?
+    # unless checkmate, switch players
   end
 
   def player_input
@@ -50,7 +62,9 @@ class Chess
 
   def verify_selection(input)
     unless @board.squares[input[0]][input[1]].nil?
-      if (@board.squares[input[0]][input[1]].white? == @board.white_to_move) && selected == []
+      if (@board.squares[input[0]][input[1]].white? == @board.white_to_move) && selected == [] &&
+        (@board.squares[input[0]][input[1]].valid_moves.length +
+         @board.squares[input[0]][input[1]].valid_captures.length > 0)
         @selected = [input[0], input[1]]
         return true
       end
