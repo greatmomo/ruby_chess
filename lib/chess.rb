@@ -14,6 +14,43 @@ class Chess
     @board.toggle_player
   end
 
+  def play_game
+    player_turn
+
+    puts "#{board.to_s}"
+    puts "Checkmate! #{board.white_to_move ? "White" : "Black"} wins!"
+  end
+
+  def player_turn
+    puts "#{board.to_s}"
+    # puts player_prompt
+    input = []
+    while 1
+      input = player_input
+      if verify_selection(input)
+        break
+      else
+        puts "Please select a #{board.white_to_move ? "white" : "black"} piece with valid moves"
+      end
+    end
+
+    while 1
+      input = player_input
+      if verify_movement(input)
+        break
+      else
+        puts "Please select a valid location to move to, or press q to deselect this piece"
+      end
+    end
+
+    puts "input = #{input}"
+    make_move(input)
+    @selected = []
+
+    # if check, do a thing?
+    # unless checkmate, switch players
+  end
+
   def player_input
     input = gets.chomp
     return [input[0].downcase.ord - 97, input[1].to_i - 1] if input.length == 2 &&
@@ -22,15 +59,12 @@ class Chess
 
     puts 'Input error! Please enter a value between a1 and h8 in chess notation.'
   end
-  
-  def square_get(input)
-    # helper function, because this gets typed so much
-    @board.squares[input[0]][input[1]] if input.length == 2
-  end
 
   def verify_selection(input)
-    unless square_get(input).nil?
-      if (square_get(input).white? == @board.white_to_move) && selected == []
+    unless @board.squares[input[0]][input[1]].nil?
+      if (@board.squares[input[0]][input[1]].white? == @board.white_to_move) && selected == [] &&
+        (@board.squares[input[0]][input[1]].valid_moves.length +
+         @board.squares[input[0]][input[1]].valid_captures.length > 0)
         @selected = [input[0], input[1]]
         return true
       end
@@ -41,8 +75,8 @@ class Chess
   def verify_movement(input)
     return false if @selected == []
 
-    return true if square_get(@selected).valid_moves.include?(input) ||
-                   square_get(@selected).valid_captures.include?(input)
+    return true if @board.squares[selected[0]][selected[1]].valid_moves.include?(input) ||
+                   @board.squares[selected[0]][selected[1]].valid_captures.include?(input)
 
     false
   end
@@ -52,3 +86,6 @@ class Chess
     @board.squares[@selected[0]][@selected[1]] = nil
   end
 end
+
+chess = Chess.new
+chess.play_game

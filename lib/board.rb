@@ -85,5 +85,5 @@ class Board
   end
 end
 
-board = Board.new
-puts "#{board.to_s}"
+# board = Board.new
+# puts "#{board.to_s}"
