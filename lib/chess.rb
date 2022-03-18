@@ -14,17 +14,29 @@ class Chess
     @board.toggle_player
   end
 
+  def play_game
+    player_turn
+
+    puts "#{board.to_s}"
+  end
+
   def player_turn
     puts "#{board.to_s}"
     # puts player_prompt
     input = []
-    until input[0] = player_input && verify_selection(input[0])
+    while 1
+      input = player_input
+      break if verify_selection(input)
     end
 
-    until input[1] = player_input && verify_movement(input[1])
+    while 1
+      input = player_input
+      break if verify_movement(input)
     end
 
+    puts "input = #{input}"
     make_move(input)
+    @selected = []
   end
 
   def player_input
@@ -35,15 +47,10 @@ class Chess
 
     puts 'Input error! Please enter a value between a1 and h8 in chess notation.'
   end
-  
-  def square_get(input)
-    # helper function, because this gets typed so much
-    @board.squares[input[0]][input[1]] if input.length == 2
-  end
 
   def verify_selection(input)
-    unless square_get(input).nil?
-      if (square_get(input).white? == @board.white_to_move) && selected == []
+    unless @board.squares[input[0]][input[1]].nil?
+      if (@board.squares[input[0]][input[1]].white? == @board.white_to_move) && selected == []
         @selected = [input[0], input[1]]
         return true
       end
@@ -54,8 +61,8 @@ class Chess
   def verify_movement(input)
     return false if @selected == []
 
-    return true if square_get(@selected).valid_moves.include?(input) ||
-                   square_get(@selected).valid_captures.include?(input)
+    return true if @board.squares[selected[0]][selected[1]].valid_moves.include?(input) ||
+                   @board.squares[selected[0]][selected[1]].valid_captures.include?(input)
 
     false
   end
@@ -65,3 +72,6 @@ class Chess
     @board.squares[@selected[0]][@selected[1]] = nil
   end
 end
+
+chess = Chess.new
+chess.play_game
