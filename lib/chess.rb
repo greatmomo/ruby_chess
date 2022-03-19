@@ -8,6 +8,7 @@ class Chess
   def initialize
     @board = Board.new
     @selected = []
+    @skip = false
   end
 
   def toggle_player
@@ -28,6 +29,8 @@ class Chess
     puts "Select a piece: "
     while 1
       input = player_input
+      next unless input
+
       if verify_selection(input)
         break
       else
@@ -38,6 +41,8 @@ class Chess
     puts "Select a destination: "
     while 1
       input = player_input
+      next unless input
+
       if verify_movement(input)
         break
       else
@@ -45,10 +50,15 @@ class Chess
       end
     end
 
-    make_move(input)
-    @selected = []
-    @board.set_moves_and_captures
-    @board.toggle_player
+    unless @skip
+      make_move(input)
+      @selected = []
+      @board.set_moves_and_captures
+      @board.toggle_player
+    else
+      @selected = []
+      @skip = false
+    end
 
     # if check, do a thing?
     # unless checkmate, switch players
@@ -56,6 +66,7 @@ class Chess
 
   def player_input
     input = gets.chomp
+    return input if input == 'Q' || input == 'q'
     return [input[0].downcase.ord - 97, input[1].to_i - 1] if input.length == 2 &&
                                                           input[0] =~ /[A-Ha-h]/ &&
                                                           input[1] =~ /[1-8]/
@@ -76,6 +87,11 @@ class Chess
   end
 
   def verify_movement(input)
+    if input == 'q' || input == 'Q'
+      @skip = true
+      return true
+    end
+
     return false if @selected == []
 
     return true if @board.squares[selected[0]][selected[1]].valid_moves.include?(input) ||
