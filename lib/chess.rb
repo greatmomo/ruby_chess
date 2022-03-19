@@ -15,7 +15,7 @@ class Chess
   end
 
   def play_game
-    player_turn
+    player_turn until check?
 
     puts "#{board.to_s}"
     puts "Checkmate! #{board.white_to_move ? "White" : "Black"} wins!"
@@ -46,6 +46,8 @@ class Chess
     puts "input = #{input}"
     make_move(input)
     @selected = []
+    @board.set_moves_and_captures
+    @board.toggle_player
 
     # if check, do a thing?
     # unless checkmate, switch players
@@ -83,7 +85,15 @@ class Chess
 
   def make_move(input)
     @board.squares[input[0]][input[1]] = @board.squares[@selected[0]][@selected[1]].dup
+    @board.squares[input[0]][input[1]].location = [input[0], input[1]]
+    @board.squares[input[0]][input[1]].has_moved if @board.squares[input[0]][input[1]].is_a?(Pawn) &&
+                                !@board.squares[input[0]][input[1]].has_moved?
+
     @board.squares[@selected[0]][@selected[1]] = nil
+  end
+
+  def check?
+    false
   end
 end
 
