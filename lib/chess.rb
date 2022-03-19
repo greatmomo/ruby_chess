@@ -23,8 +23,9 @@ class Chess
 
   def player_turn
     puts "#{board.to_s}"
-    # puts player_prompt
+    puts "#{board.white_to_move ? "White" : "Black"}'s turn!"
     input = []
+    puts "Select a piece: "
     while 1
       input = player_input
       if verify_selection(input)
@@ -34,6 +35,7 @@ class Chess
       end
     end
 
+    puts "Select a destination: "
     while 1
       input = player_input
       if verify_movement(input)
@@ -43,7 +45,6 @@ class Chess
       end
     end
 
-    puts "input = #{input}"
     make_move(input)
     @selected = []
     @board.set_moves_and_captures
