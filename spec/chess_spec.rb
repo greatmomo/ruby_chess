@@ -249,17 +249,15 @@ describe Chess do
     subject(:game_input) { described_class.new }
 
     context 'when it is not check' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(game_input.check?).to be false
       end
     end
 
     context 'when it is check' do
-      before do
-        # make it be check
-      end
-
-      xit 'returns true' do
+      it 'returns true' do
+        game_input.board.squares[2][2] = BlackKing.new(game_input.board, [2, 2])
+        game_input.board.set_moves_and_captures
         expect(game_input.check?).to be true
       end
     end
