@@ -9,6 +9,7 @@ class Chess
     @board = Board.new
     @selected = []
     @skip = false
+    @checkmate = false
   end
 
   def toggle_player
@@ -16,10 +17,10 @@ class Chess
   end
 
   def play_game
-    player_turn until check?
+    player_turn until @checkmate
 
     puts "#{board.to_s}"
-    puts "Checkmate! #{board.white_to_move ? "White" : "Black"} wins!"
+    puts "Checkmate! #{board.white_to_move ? "Black" : "White"} wins!"
   end
 
   def player_turn
@@ -61,7 +62,10 @@ class Chess
     end
 
     # if check, do a thing?
-    # unless checkmate, switch players
+    if check?
+      puts "That's check!"
+      @checkmate = true if checkmate?
+    end
   end
 
   def player_input
@@ -104,15 +108,37 @@ class Chess
     @board.squares[input[0]][input[1]] = @board.squares[@selected[0]][@selected[1]].dup
     @board.squares[input[0]][input[1]].location = [input[0], input[1]]
     @board.squares[input[0]][input[1]].has_moved if @board.squares[input[0]][input[1]].is_a?(Pawn) &&
-                                !@board.squares[input[0]][input[1]].has_moved?
+                                                    !@board.squares[input[0]][input[1]].has_moved?
 
     @board.squares[@selected[0]][@selected[1]] = nil
   end
 
   def check?
+    @board.squares.each do |file|
+      file.each do |piece|
+        if piece
+          piece.valid_captures.each do |location|
+            return true if piece.white? && @board.squares[location[0]][location[1]].is_a?(BlackKing)
+
+            return true if !piece.white? && @board.squares[location[0]][location[1]].is_a?(WhiteKing)
+          end
+        end
+      end
+    end
+    false
+  end
+
+  def checkmate?
+    # copy the board state
+    # test each possible move for the current player to see if it removes check
+
+    # how do I avoid the player putting themselves in check?
+    # if moved yourself into check, undo the last move?
+    # make a revert_move function that does the opposite of make move and toggles back
+    # would need to store the last move
     false
   end
 end
 
-chess = Chess.new
-chess.play_game
+# chess = Chess.new
+# chess.play_game
