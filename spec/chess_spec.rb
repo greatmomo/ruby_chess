@@ -256,7 +256,7 @@ describe Chess do
 
     context 'when it is check' do
       it 'returns true' do
-        game_input.board.squares[2][2] = BlackKing.new(game_input.board, [2, 2])
+        game_input.board.squares[5][2] = BlackKing.new(game_input.board, [2, 2])
         game_input.board.set_moves_and_captures
         expect(game_input.check?).to be true
       end
@@ -267,13 +267,13 @@ describe Chess do
     # when a move is check, check if it is checkmate
     subject(:game_input) { described_class.new }
 
-    context 'when it is not check' do
+    context 'when it is not checkmate' do
       xit 'returns false' do
         expect(game_input.checkmate?).to be false
       end
     end
 
-    context 'when it is check' do
+    context 'when it is checkmate' do
       before do
         # make it be checkmate
       end

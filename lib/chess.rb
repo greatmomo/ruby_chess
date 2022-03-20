@@ -110,6 +110,17 @@ class Chess
   end
 
   def check?
+    @board.squares.each do |file|
+      file.each do |piece|
+        if piece
+          piece.valid_captures.each do |location|
+            return true if piece.white? && @board.squares[location[0]][location[1]].is_a?(BlackKing)
+
+            return true if !piece.white? && @board.squares[location[0]][location[1]].is_a?(WhiteKing)
+          end
+        end
+      end
+    end
     false
   end
 end
