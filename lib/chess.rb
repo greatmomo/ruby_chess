@@ -10,6 +10,9 @@ class Chess
     @selected = []
     @skip = false
     @checkmate = false
+    @white_check = false
+    @black_check = false
+    @previous = []
   end
 
   def toggle_player
@@ -19,13 +22,13 @@ class Chess
   def play_game
     player_turn until @checkmate
 
-    puts "#{board.to_s}"
+    puts "#{@board.to_s}"
     puts "Checkmate! #{board.white_to_move ? "Black" : "White"} wins!"
   end
 
   def player_turn
-    puts "#{board.to_s}"
-    puts "#{board.white_to_move ? "White" : "Black"}'s turn!"
+    puts "#{@board.to_s}"
+    puts "#{@board.white_to_move ? "White" : "Black"}'s turn!"
     input = []
     puts "Select a piece: "
     while 1
@@ -52,6 +55,7 @@ class Chess
     end
 
     unless @skip
+      @previous = @selected.map(&:clone)
       make_move(input)
       @selected = []
       @board.set_moves_and_captures
@@ -63,8 +67,14 @@ class Chess
 
     # if check, do a thing?
     if check?
-      puts "That's check!"
-      @checkmate = true if checkmate?
+      if (@white_check && !@board.white_to_move) || (@black_check && @board.white_to_move)
+        # In the event of self check, undo that move and toggle the active player back
+        undo_move(input, @previous)
+        @board.toggle_player
+      else
+        puts "That's check!"
+        @checkmate = true if checkmate?
+      end
     end
   end
 
@@ -113,18 +123,33 @@ class Chess
     @board.squares[@selected[0]][@selected[1]] = nil
   end
 
+  def undo_move(current, old)
+    @board.squares[old[0]][old[1]] = @board.squares[current[0]][current[1]].dup
+    @board.squares[old[0]][old[1]].location = [old[0], old[1]]
+
+    @board.squares[old[0]][old[1]].undo_moved if (@board.squares[old[0]][old[1]].color == 'white' &&
+                                                 old[1] == 1) || (old[1] == 6 &&
+                                                 @board.squares[old[0]][old[1]].color == 'black')
+
+    @board.squares[current[0]][current[1]] = nil
+  end
+
   def check?
+    @white_check = false
+    @black_check = false
     @board.squares.each do |file|
       file.each do |piece|
         if piece
           piece.valid_captures.each do |location|
-            return true if piece.white? && @board.squares[location[0]][location[1]].is_a?(BlackKing)
+            @black_check = true if piece.white? && @board.squares[location[0]][location[1]].is_a?(BlackKing)
 
-            return true if !piece.white? && @board.squares[location[0]][location[1]].is_a?(WhiteKing)
+            @white_check = true if !piece.white? && @board.squares[location[0]][location[1]].is_a?(WhiteKing)
           end
         end
       end
     end
+    return true if @black_check || @white_check
+
     false
   end
 
@@ -140,5 +165,5 @@ class Chess
   end
 end
 
-# chess = Chess.new
-# chess.play_game
+chess = Chess.new
+chess.play_game
