@@ -65,12 +65,10 @@ class Chess
       @skip = false
     end
 
-    puts "previous = #{@previous}, input = #{input}"
-
     # if check, do a thing?
     if check?
       if (@white_check && !@board.white_to_move) || (@black_check && @board.white_to_move)
-        puts "Reset check!"
+        # In the event of self check, undo that move and toggle the active player back
         undo_move(input, @previous)
         @board.toggle_player
       else
