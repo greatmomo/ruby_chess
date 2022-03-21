@@ -46,6 +46,10 @@ class Pawn < Piece
   def has_moved
     @moved = true
   end
+
+  def undo_moved
+    @moved = false
+  end
 end
 
 class WhitePawn < Pawn

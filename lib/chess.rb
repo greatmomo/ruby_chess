@@ -12,7 +12,7 @@ class Chess
     @checkmate = false
     @white_check = false
     @black_check = false
-    @previous_boardstate = nil
+    @previous = []
   end
 
   def toggle_player
@@ -22,13 +22,13 @@ class Chess
   def play_game
     player_turn until @checkmate
 
-    puts "#{board.to_s}"
+    puts "#{@board.to_s}"
     puts "Checkmate! #{board.white_to_move ? "Black" : "White"} wins!"
   end
 
   def player_turn
-    puts "#{board.to_s}"
-    puts "#{board.white_to_move ? "White" : "Black"}'s turn!"
+    puts "#{@board.to_s}"
+    puts "#{@board.white_to_move ? "White" : "Black"}'s turn!"
     input = []
     puts "Select a piece: "
     while 1
@@ -55,7 +55,7 @@ class Chess
     end
 
     unless @skip
-      @previous_boardstate = board.dup
+      @previous = @selected.map(&:clone)
       make_move(input)
       @selected = []
       @board.set_moves_and_captures
@@ -65,10 +65,13 @@ class Chess
       @skip = false
     end
 
+    puts "previous = #{@previous}, input = #{input}"
+
     # if check, do a thing?
     if check?
-      if (white_check && !@board.white_to_move) || (black_check && @board.white_to_move)
-        board = @previous_boardstate.dup
+      if (@white_check && !@board.white_to_move) || (@black_check && @board.white_to_move)
+        puts "Reset check!"
+        undo_move(input, @previous)
         @board.toggle_player
       else
         puts "That's check!"
@@ -122,6 +125,17 @@ class Chess
     @board.squares[@selected[0]][@selected[1]] = nil
   end
 
+  def undo_move(current, old)
+    @board.squares[old[0]][old[1]] = @board.squares[current[0]][current[1]].dup
+    @board.squares[old[0]][old[1]].location = [old[0], old[1]]
+
+    @board.squares[old[0]][old[1]].undo_moved if (@board.squares[old[0]][old[1]].color == 'white' &&
+                                                 old[1] == 1) || (old[1] == 6 &&
+                                                 @board.squares[old[0]][old[1]].color == 'black')
+
+    @board.squares[current[0]][current[1]] = nil
+  end
+
   def check?
     @white_check = false
     @black_check = false
@@ -153,5 +167,5 @@ class Chess
   end
 end
 
-# chess = Chess.new
-# chess.play_game
+chess = Chess.new
+chess.play_game
