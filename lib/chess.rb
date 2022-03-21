@@ -12,6 +12,7 @@ class Chess
     @checkmate = false
     @white_check = false
     @black_check = false
+    @previous_boardstate = nil
   end
 
   def toggle_player
@@ -54,6 +55,7 @@ class Chess
     end
 
     unless @skip
+      @previous_boardstate = board.dup
       make_move(input)
       @selected = []
       @board.set_moves_and_captures
@@ -65,8 +67,13 @@ class Chess
 
     # if check, do a thing?
     if check?
-      puts "That's check!"
-      @checkmate = true if checkmate?
+      if (white_check && !@board.white_to_move) || (black_check && @board.white_to_move)
+        board = @previous_boardstate.dup
+        @board.toggle_player
+      else
+        puts "That's check!"
+        @checkmate = true if checkmate?
+      end
     end
   end
 
@@ -130,7 +137,7 @@ class Chess
       end
     end
     return true if @black_check || @white_check
-    
+
     false
   end
 
