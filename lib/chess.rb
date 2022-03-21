@@ -10,6 +10,8 @@ class Chess
     @selected = []
     @skip = false
     @checkmate = false
+    @white_check = false
+    @black_check = false
   end
 
   def toggle_player
@@ -114,17 +116,21 @@ class Chess
   end
 
   def check?
+    @white_check = false
+    @black_check = false
     @board.squares.each do |file|
       file.each do |piece|
         if piece
           piece.valid_captures.each do |location|
-            return true if piece.white? && @board.squares[location[0]][location[1]].is_a?(BlackKing)
+            @black_check = true if piece.white? && @board.squares[location[0]][location[1]].is_a?(BlackKing)
 
-            return true if !piece.white? && @board.squares[location[0]][location[1]].is_a?(WhiteKing)
+            @white_check = true if !piece.white? && @board.squares[location[0]][location[1]].is_a?(WhiteKing)
           end
         end
       end
     end
+    return true if @black_check || @white_check
+    
     false
   end
 
