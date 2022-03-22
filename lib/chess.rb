@@ -156,14 +156,47 @@ class Chess
   def checkmate?
     # copy the board state
     # test each possible move for the current player to see if it removes check
+    @board.squares.each do |file|
+      file.each do |piece|
+        if piece
+          if (!@board.white_to_move == piece.white?) && @white_check
+            return false if check_moves(piece, 'white')
 
-    # how do I avoid the player putting themselves in check?
-    # if moved yourself into check, undo the last move?
-    # make a revert_move function that does the opposite of make move and toggles back
-    # would need to store the last move
+          end
+          if (@board.white_to_move == !piece.white?) && @black_check
+            return false if check_moves(piece, 'black')
+
+          end
+        end
+      end
+    end
+    true
+  end
+
+  def check_moves(piece, color)
+    piece.valid_moves.each do |move|
+      @selected = [piece.location[0], piece.location[1]]
+      previous = @selected.map(&:clone)
+      make_move(move)
+      unless check? && (color == 'white' ? @white_check : @black_check)
+        return true
+      end
+      undo_move(move, previous)
+    end
+
+    piece.valid_captures.each do |move|
+      @selected = [piece.location[0], piece.location[1]]
+      previous = @selected.map(&:clone)
+      make_move(move)
+      unless check? && (color == 'white' ? @white_check : @black_check)
+        return true
+      end
+      undo_move(move, previous)
+    end
     false
   end
 end
 
 chess = Chess.new
 chess.play_game
+

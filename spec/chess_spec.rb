@@ -269,6 +269,9 @@ describe Chess do
 
     context 'when it is not checkmate' do
       it 'returns false' do
+        game_input.board.squares[5][2] = BlackKing.new(game_input.board, [5, 2])
+        game_input.board.set_moves_and_captures
+        game_input.check?
         expect(game_input.checkmate?).to be false
       end
     end
