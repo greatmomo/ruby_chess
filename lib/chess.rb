@@ -159,12 +159,13 @@ class Chess
     @board.squares.each do |file|
       file.each do |piece|
         if piece
-          puts "black_check = #{@black_check}"
           if (!@board.white_to_move == piece.white?) && @white_check
             return false if check_moves(piece, 'white')
+
           end
           if (@board.white_to_move == !piece.white?) && @black_check
             return false if check_moves(piece, 'black')
+
           end
         end
       end
@@ -178,11 +179,21 @@ class Chess
       previous = @selected.map(&:clone)
       make_move(move)
       unless check? && (color == 'white' ? @white_check : @black_check)
-        return false
+        return true
       end
       undo_move(move, previous)
     end
-    true
+
+    piece.valid_captures.each do |move|
+      @selected = [piece.location[0], piece.location[1]]
+      previous = @selected.map(&:clone)
+      make_move(move)
+      unless check? && (color == 'white' ? @white_check : @black_check)
+        return true
+      end
+      undo_move(move, previous)
+    end
+    false
   end
 end
 
