@@ -57,7 +57,6 @@ class Chess
     unless @skip
       @previous = @selected.map(&:clone)
       make_move(input)
-      @selected = []
       @board.set_moves_and_captures
       @board.toggle_player
     else
@@ -72,8 +71,6 @@ class Chess
         undo_move(input, @previous)
         @board.toggle_player
       else
-        puts "That's check! White = #{@white_check}, Black = #{@black_check}"
-        puts "Current player = #{@board.white_to_move ? 'white' : 'black'}"
         @checkmate = true if checkmate?
         @board.set_moves_and_captures
       end
@@ -123,6 +120,8 @@ class Chess
                                                     !@board.squares[input[0]][input[1]].has_moved?
 
     @board.squares[@selected[0]][@selected[1]] = nil
+    @board.set_moves_and_captures
+    @selected = []
   end
 
   def undo_move(current, old)
@@ -134,6 +133,8 @@ class Chess
                                                  @board.squares[old[0]][old[1]].color == 'black')
 
     @board.squares[current[0]][current[1]] = nil
+    @board.set_moves_and_captures
+    @selected = []
   end
 
   def check?
@@ -161,7 +162,7 @@ class Chess
     @board.squares.each do |file|
       file.each do |piece|
         if piece
-          puts "This piece is being tested for checkmate fixing: #{piece}"
+          puts "This piece is being tested for checkmate fixing: #{piece}, #{piece.location}"
           if (@board.white_to_move == piece.white?) && @white_check
             return false if check_moves(piece, 'white')
 
@@ -181,28 +182,22 @@ class Chess
       @selected = [piece.location[0], piece.location[1]]
       previous = @selected.map(&:clone)
       make_move(move)
-      @board.set_moves_and_captures
       unless check? && (color == 'white' ? @white_check : @black_check)
         undo_move(move, previous)
-        @board.set_moves_and_captures
         return true
       end
       undo_move(move, previous)
-      @board.set_moves_and_captures
     end
 
     piece.valid_captures.each do |move|
       @selected = [piece.location[0], piece.location[1]]
       previous = @selected.map(&:clone)
       make_move(move)
-      @board.set_moves_and_captures
       unless check? && (color == 'white' ? @white_check : @black_check)
         undo_move(move, previous)
-        @board.set_moves_and_captures
         return true
       end
       undo_move(move, previous)
-      @board.set_moves_and_captures
     end
     false
   end
