@@ -73,7 +73,6 @@ class Chess
         @board.toggle_player
       else
         @checkmate = true if checkmate?
-        @board.set_moves_and_captures
       end
     end
   end
@@ -174,7 +173,6 @@ class Chess
     @board.squares.each do |file|
       file.each do |piece|
         if piece
-          puts "This piece is being tested for checkmate fixing: #{piece}, #{piece.location}"
           if (@board.white_to_move == piece.white?) && @white_check
             return false if check_moves(piece, 'white')
 
