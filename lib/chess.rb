@@ -13,6 +13,7 @@ class Chess
     @white_check = false
     @black_check = false
     @previous = []
+    @last_capture = nil
   end
 
   def toggle_player
@@ -114,12 +115,18 @@ class Chess
   end
 
   def make_move(input)
+    if @board.squares[input[0]][input[1]]
+      @last_capture = @board.squares[input[0]][input[1]]
+    else
+      @last_capture = nil
+    end
     @board.squares[input[0]][input[1]] = @board.squares[@selected[0]][@selected[1]].dup
     @board.squares[input[0]][input[1]].location = [input[0], input[1]]
     @board.squares[input[0]][input[1]].has_moved if @board.squares[input[0]][input[1]].is_a?(Pawn) &&
                                                     !@board.squares[input[0]][input[1]].has_moved?
 
     @board.squares[@selected[0]][@selected[1]] = nil
+
     @board.set_moves_and_captures
     @selected = []
   end
@@ -132,7 +139,12 @@ class Chess
                                                  old[1] == 1) || (old[1] == 6 &&
                                                  @board.squares[old[0]][old[1]].color == 'black')
 
-    @board.squares[current[0]][current[1]] = nil
+    if @last_capture
+      @board.squares[current[0]][current[1]] = @last_capture
+    else
+      @board.squares[current[0]][current[1]] = nil
+    end
+
     @board.set_moves_and_captures
     @selected = []
   end
