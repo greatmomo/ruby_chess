@@ -72,8 +72,10 @@ class Chess
         undo_move(input, @previous)
         @board.toggle_player
       else
-        puts "That's check!"
+        puts "That's check! White = #{@white_check}, Black = #{@black_check}"
+        puts "Current player = #{@board.white_to_move ? 'white' : 'black'}"
         @checkmate = true if checkmate?
+        @board.set_moves_and_captures
       end
     end
   end
@@ -159,11 +161,12 @@ class Chess
     @board.squares.each do |file|
       file.each do |piece|
         if piece
-          if (!@board.white_to_move == piece.white?) && @white_check
+          puts "This piece is being tested for checkmate fixing: #{piece}"
+          if (@board.white_to_move == piece.white?) && @white_check
             return false if check_moves(piece, 'white')
 
           end
-          if (@board.white_to_move == !piece.white?) && @black_check
+          if (!@board.white_to_move == !piece.white?) && @black_check
             return false if check_moves(piece, 'black')
 
           end
@@ -178,20 +181,28 @@ class Chess
       @selected = [piece.location[0], piece.location[1]]
       previous = @selected.map(&:clone)
       make_move(move)
+      @board.set_moves_and_captures
       unless check? && (color == 'white' ? @white_check : @black_check)
+        undo_move(move, previous)
+        @board.set_moves_and_captures
         return true
       end
       undo_move(move, previous)
+      @board.set_moves_and_captures
     end
 
     piece.valid_captures.each do |move|
       @selected = [piece.location[0], piece.location[1]]
       previous = @selected.map(&:clone)
       make_move(move)
+      @board.set_moves_and_captures
       unless check? && (color == 'white' ? @white_check : @black_check)
+        undo_move(move, previous)
+        @board.set_moves_and_captures
         return true
       end
       undo_move(move, previous)
+      @board.set_moves_and_captures
     end
     false
   end
