@@ -18,6 +18,10 @@ class Chess
     @last_capture = nil
   end
 
+  def load_prep
+    @board.set_moves_and_captures
+  end
+  
   def toggle_player
     @board.toggle_player
   end
@@ -33,7 +37,7 @@ class Chess
     puts "#{@board.to_s}"
     puts "#{@board.white_to_move ? "White" : "Black"}'s turn!"
     input = []
-    puts "Select a piece, or press 's' to save, or 'l' to load: "
+    puts "Select a piece, or press 's' to save: "
     while 1
       input = player_input
       next unless input
@@ -46,9 +50,8 @@ class Chess
     end
 
     if @skip
-      save_game if input == 's' || input == 'S'
-      load_game if input == 'l' || input == 'L'
       @skip = false
+      save_game if input == 's' || input == 'S'
     else
       puts "Select a destination: "
       while 1
@@ -87,7 +90,7 @@ class Chess
 
   def player_input
     input = gets.chomp
-    return input if input == 'Q' || input == 'q' || input == 'S' || input == 's' || input == 'L' || input == 'l'
+    return input if input == 'Q' || input == 'q' || input == 'S' || input == 's'
     return [input[0].downcase.ord - 97, input[1].to_i - 1] if input.length == 2 &&
                                                           input[0] =~ /[A-Ha-h]/ &&
                                                           input[1] =~ /[1-8]/
@@ -96,7 +99,7 @@ class Chess
   end
 
   def verify_selection(input)
-    if input == 's' || input == 'S' || input == 'l' || input == 'L'
+    if input == 's' || input == 'S'
       @skip = true
       return true
     end
@@ -270,16 +273,25 @@ class Chess
     File.open(file_name, 'w') { |file| file.write(self.to_yaml) }
     's'
   end
-  
-  def load_game
-    print 'Enter the filename: '
-    file_name = gets.chomp
-    file = File.open(file_name, 'r')
-    data = file.read
-    YAML.safe_load(data)
-  end
 end
 
-chess = Chess.new
-chess.play_game
+chess = nil
+input = ''
 
+puts "Play a new game 'n', or load an existing game 'l'?"
+until input == 'n' || input == 'l'
+  input = gets.chomp.downcase
+end
+
+if input == 'l'
+  print 'Enter the filename: '
+  file_name = gets.chomp
+  file = File.open(file_name, 'r')
+  data = file.read
+  chess = YAML.load(data, Chess)
+else
+  chess = Chess.new
+  chess.load_prep
+end
+
+chess.play_game
