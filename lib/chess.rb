@@ -121,8 +121,15 @@ class Chess
     end
     @board.squares[input[0]][input[1]] = @board.squares[@selected[0]][@selected[1]].dup
     @board.squares[input[0]][input[1]].location = [input[0], input[1]]
-    @board.squares[input[0]][input[1]].has_moved if @board.squares[input[0]][input[1]].is_a?(Pawn) &&
-                                                    !@board.squares[input[0]][input[1]].has_moved?
+    if @board.squares[input[0]][input[1]].is_a?(Pawn)
+      @board.squares[input[0]][input[1]].has_moved if !@board.squares[input[0]][input[1]].has_moved?
+
+      if input[1] == 0 && @board.squares[input[0]][input[1]].color == 'black'
+        pawn_promotion(input, 'black')
+      elsif input[1] == 7 && @board.squares[input[0]][input[1]].color == 'white'
+          pawn_promotion(input, 'white')
+      end
+    end
 
     @board.squares[@selected[0]][@selected[1]] = nil
 
@@ -134,9 +141,11 @@ class Chess
     @board.squares[old[0]][old[1]] = @board.squares[current[0]][current[1]].dup
     @board.squares[old[0]][old[1]].location = [old[0], old[1]]
 
-    @board.squares[old[0]][old[1]].undo_moved if (@board.squares[old[0]][old[1]].color == 'white' &&
-                                                 old[1] == 1) || (old[1] == 6 &&
-                                                 @board.squares[old[0]][old[1]].color == 'black')
+    if @board.squares[old[0]][old[1]].is_a?(Pawn)
+      @board.squares[old[0]][old[1]].undo_moved if (@board.squares[old[0]][old[1]].color == 'white' &&
+                                                   old[1] == 1) || (old[1] == 6 &&
+                                                   @board.squares[old[0]][old[1]].color == 'black')
+    end
 
     if @last_capture
       @board.squares[current[0]][current[1]] = @last_capture
