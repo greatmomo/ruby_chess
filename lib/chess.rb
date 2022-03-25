@@ -137,6 +137,36 @@ class Chess
     @selected = []
   end
 
+  def pawn_promotion(location, color)
+    options = ['q', 'r', 'b', 'k']
+    input = ''
+    until options.include?(input)
+      puts "Choose what to promote this pawn to (Queen - 'q', Rook - 'r', Bishop - 'b', Knight - 'k')"
+      input = gets.chomp.downcase
+    end
+
+    case input
+    when 'q'
+      @board.squares[location[0]][location[1]] = (color == 'white' ?
+                                                 WhiteQueen.new(@board, [location[0], location[1]]) :
+                                                 BlackQueen.new(@board, [location[0], location[1]]))
+    when 'r'
+      @board.squares[location[0]][location[1]] = (color == 'white' ?
+                                                 WhiteRook.new(@board, [location[0], location[1]]) :
+                                                 BlackRook.new(@board, [location[0], location[1]]))
+    when 'b'
+      @board.squares[location[0]][location[1]] = (color == 'white' ?
+                                                 WhiteBishop.new(@board, [location[0], location[1]]) :
+                                                 BlackBishop.new(@board, [location[0], location[1]]))
+    when 'k'
+      @board.squares[location[0]][location[1]] = (color == 'white' ?
+                                                 WhiteKnight.new(@board, [location[0], location[1]]) :
+                                                 BlackKnight.new(@board, [location[0], location[1]]))
+    else
+      puts "something went wrong with pawn promotion =/"
+    end
+  end
+
   def undo_move(current, old)
     @board.squares[old[0]][old[1]] = @board.squares[current[0]][current[1]].dup
     @board.squares[old[0]][old[1]].location = [old[0], old[1]]
