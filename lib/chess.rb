@@ -2,6 +2,8 @@
 
 require_relative 'board'
 
+require 'yaml'
+
 class Chess
   attr_reader :board, :selected
 
@@ -31,7 +33,7 @@ class Chess
     puts "#{@board.to_s}"
     puts "#{@board.white_to_move ? "White" : "Black"}'s turn!"
     input = []
-    puts "Select a piece: "
+    puts "Select a piece, or press 's' to save, or 'l' to load: "
     while 1
       input = player_input
       next unless input
@@ -43,43 +45,49 @@ class Chess
       end
     end
 
-    puts "Select a destination: "
-    while 1
-      input = player_input
-      next unless input
-
-      if verify_movement(input)
-        break
-      else
-        puts "Please select a valid location to move to, or press q to deselect this piece"
-      end
-    end
-
-    unless @skip
-      @previous = @selected.map(&:clone)
-      make_move(input)
-      @board.set_moves_and_captures
-      @board.toggle_player
-    else
-      @selected = []
+    if @skip
+      save_game if input == 's' || input == 'S'
+      load_game if input == 'l' || input == 'L'
       @skip = false
-    end
-
-    # if check, do a thing?
-    if check?
-      if (@white_check && !@board.white_to_move) || (@black_check && @board.white_to_move)
-        # In the event of self check, undo that move and toggle the active player back
-        undo_move(input, @previous)
+    else
+      puts "Select a destination: "
+      while 1
+        input = player_input
+        next unless input
+  
+        if verify_movement(input)
+          break
+        else
+          puts "Please select a valid location to move to, or press q to deselect this piece"
+        end
+      end
+  
+      unless @skip
+        @previous = @selected.map(&:clone)
+        make_move(input)
+        @board.set_moves_and_captures
         @board.toggle_player
       else
-        @checkmate = true if checkmate?
+        @selected = []
+        @skip = false
+      end
+  
+      # if check, do a thing?
+      if check?
+        if (@white_check && !@board.white_to_move) || (@black_check && @board.white_to_move)
+          # In the event of self check, undo that move and toggle the active player back
+          undo_move(input, @previous)
+          @board.toggle_player
+        else
+          @checkmate = true if checkmate?
+        end
       end
     end
   end
 
   def player_input
     input = gets.chomp
-    return input if input == 'Q' || input == 'q'
+    return input if input == 'Q' || input == 'q' || input == 'S' || input == 's' || input == 'L' || input == 'l'
     return [input[0].downcase.ord - 97, input[1].to_i - 1] if input.length == 2 &&
                                                           input[0] =~ /[A-Ha-h]/ &&
                                                           input[1] =~ /[1-8]/
@@ -88,6 +96,11 @@ class Chess
   end
 
   def verify_selection(input)
+    if input == 's' || input == 'S' || input == 'l' || input == 'L'
+      @skip = true
+      return true
+    end
+
     unless @board.squares[input[0]][input[1]].nil?
       if (@board.squares[input[0]][input[1]].white? == @board.white_to_move) && selected == [] &&
         (@board.squares[input[0]][input[1]].valid_moves.length +
@@ -249,6 +262,21 @@ class Chess
       undo_move(move, previous)
     end
     false
+  end
+
+  def save_game
+    print 'Enter the filename: '
+    file_name = gets.chomp
+    File.open(file_name, 'w') { |file| file.write(self.to_yaml) }
+    's'
+  end
+  
+  def load_game
+    print 'Enter the filename: '
+    file_name = gets.chomp
+    file = File.open(file_name, 'r')
+    data = file.read
+    YAML.safe_load(data)
   end
 end
 
